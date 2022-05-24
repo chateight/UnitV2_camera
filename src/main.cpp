@@ -1,5 +1,8 @@
 #include <M5Stack.h>
 #include <ArduinoJson.h>
+#include <SoftwareSerial.h>
+
+SoftwareSerial GroveA(21, 22);
 
 int x;
 int y;
@@ -11,13 +14,13 @@ void setup() {
   M5.Lcd.setCursor(20, 40);
   M5.Lcd.setTextSize(2);
   Serial.begin(115200);
-  Serial2.begin(115200, SERIAL_8N1, 32, 33);
+  GroveA.begin(115200);
   M5.Lcd.print("--initialized--");      // display M5 Lcd message
   Serial.print("---initialized---");    // output serial line
 }
 
 void readJSON(void){
-  String recvStr = Serial2.readStringUntil('\n');
+  String recvStr = GroveA.readStringUntil('\n');
   StaticJsonDocument<128> doc;
   DeserializationError error = deserializeJson(doc, recvStr);
 
@@ -34,7 +37,7 @@ void readJSON(void){
 }
 
 void loop(){
-  if(Serial2.available()) {
+  if(GroveA.available()) {
     readJSON();
     sprintf(data,"x = %d , y = %d , k = %ld",x,y,k);
     Serial.println(data);
