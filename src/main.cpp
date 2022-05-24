@@ -8,9 +8,12 @@ char data[50];
 
 void setup() {
   M5.begin();
+  M5.Lcd.setCursor(20, 40);
+  M5.Lcd.setTextSize(2);
   Serial.begin(115200);
-  Serial2.begin(115200, SERIAL_8N1, 33, 32);
-  Serial.print("initialized");
+  Serial2.begin(115200, SERIAL_8N1, 32, 33);
+  M5.Lcd.print("--initialized--");      // display M5 Lcd message
+  Serial.print("---initialized---");    // output serial line
 }
 
 void readJSON(void){
@@ -37,3 +40,4 @@ void loop(){
     Serial.println(data);
   }
 }
+
