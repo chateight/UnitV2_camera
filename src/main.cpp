@@ -2,7 +2,8 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 
-SoftwareSerial GroveA(21, 22);
+SoftwareSerial Grove(22, 21);     // define rx/tx connecting to the UnitV2 camera
+                                  // SoftwareSerial(rxPin, txPin, inverse_logic)
 
 int x;
 int y;
@@ -14,13 +15,24 @@ void setup() {
   M5.Lcd.setCursor(20, 40);
   M5.Lcd.setTextSize(2);
   Serial.begin(115200);
-  GroveA.begin(115200);
+  Grove.begin(115200);
   M5.Lcd.print("--initialized--");      // display M5 Lcd message
   Serial.print("---initialized---");    // output serial line
 }
 
+
+void loop_(){
+
+  if(Grove.available()) {
+    String recvStr = Grove.readStringUntil('\n');
+    if(recvStr[0] == '{'){
+      Serial.print(recvStr);
+    }
+  }
+}
+
 void readJSON(void){
-  String recvStr = GroveA.readStringUntil('\n');
+  String recvStr = Grove.readStringUntil('\n');
   StaticJsonDocument<128> doc;
   DeserializationError error = deserializeJson(doc, recvStr);
 
@@ -37,7 +49,7 @@ void readJSON(void){
 }
 
 void loop(){
-  if(GroveA.available()) {
+  if(Grove.available()) {
     readJSON();
     sprintf(data,"x = %d , y = %d , k = %ld",x,y,k);
     Serial.println(data);
