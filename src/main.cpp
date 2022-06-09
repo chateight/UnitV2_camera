@@ -35,7 +35,7 @@ void loop_(){
 
 void readJSON(void){
   String recvStr = Grove.readStringUntil('\n');
-  StaticJsonDocument<1024> doc;
+  StaticJsonDocument<1024> doc;                   // allocates the memory pool in the stack memory
   DeserializationError error = deserializeJson(doc, recvStr);
 
   if (error) {
