@@ -19,7 +19,7 @@ void setup() {
   Grove.begin(115200);
   M5.Lcd.print("--initialized--");      // display M5 Lcd message
   M5.Lcd.setCursor(20, 70);
-  M5.Lcd.print("Face recongition");
+  M5.Lcd.print("Face recognition");
 }
 
 
