@@ -1,10 +1,8 @@
-#include <M5Stack.h>
-#include <ArduinoJson.h>
-#include <SoftwareSerial.h>
+#include <ai_camera.hpp>
+
 
 SoftwareSerial Grove(22, 21);     // define rx/tx connecting to the UnitV2 camera
                                   // SoftwareSerial(rxPin, txPin, inverse_logic)
-
 float x;
 int y;
 long k;
@@ -12,11 +10,14 @@ char data[1000];
 
 void setup() {
   M5.begin();
-  M5.Lcd.setCursor(20, 40);
+  M5.Lcd.setCursor(20, 20);
   M5.Lcd.setTextSize(2);
   M5.Speaker.begin(); 
   Serial.begin(115200);
   Grove.begin(115200);
+  M5.Lcd.print("--init sequence start--");
+  http_setup();       // connect to the UnitV2 camera via wi-fi AP
+  M5.Lcd.setCursor(20, 40);
   M5.Lcd.print("--initialized--");      // display M5 Lcd message
   M5.Lcd.setCursor(20, 70);
   M5.Lcd.print("Face recognition");
