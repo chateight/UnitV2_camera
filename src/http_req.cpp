@@ -22,12 +22,12 @@ void http_setup() {
   if(httpCode > 0) {
     Serial.printf("Response Code: %d\n", httpCode);
     if (httpCode == HTTP_CODE_OK) {
-      String payload = http.getString();
-      Serial.printf("Response Payload: %s\n", payload.c_str());
+    //  String payload = http.getString();
+    //  Serial.printf("Response Payload: %s\n", payload.c_str());
     }
   } else {
     Serial.printf("Error: %s\n", http.errorToString(httpCode).c_str());
   }
-//  http.end();
+  http.end();
 
 }

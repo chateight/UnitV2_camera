@@ -4,6 +4,7 @@
 SoftwareSerial Grove(22, 21);     // define rx/tx connecting to the UnitV2 camera
                                   // SoftwareSerial(rxPin, txPin, inverse_logic)
 float x;
+String f_id;    // face_id
 int y;
 long k;
 char data[1000];
@@ -19,8 +20,6 @@ void setup() {
   http_setup();       // connect to the UnitV2 camera via wi-fi AP
   M5.Lcd.setCursor(20, 40);
   M5.Lcd.print("--initialized--");      // display M5 Lcd message
-  M5.Lcd.setCursor(20, 70);
-  M5.Lcd.print("Face recognition");
 }
 
 
@@ -46,15 +45,22 @@ void readJSON(void){
   }
 
   x = doc["face"][0]["match_prob"];
+  String id = doc["face"][0]["name"];
+  f_id = id;
+  Serial.println(f_id);
 }
 
 void loop(){
+  M5.Lcd.setCursor(20, 70);
+  //M5.Lcd.print("                          ");
   M5.Speaker.mute();
   if(Grove.available()) {
     readJSON();
     Serial.println(x);
     if (x > 0.7f)
     {
+      M5.Lcd.setCursor(20, 70);
+      M5.Lcd.printf("Face ID : %s", f_id);
       M5.Speaker.setVolume(3);
       M5.Speaker.beep();
       delay(200);     
